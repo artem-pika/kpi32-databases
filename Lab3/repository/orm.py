@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, DateTime, Time, Numeric, ForeignKey
+from sqlalchemy import Column, Integer, String, DateTime, Time, Numeric, Boolean, ForeignKey
 from sqlalchemy.orm import declarative_base, relationship
 
 Base = declarative_base()
@@ -21,4 +21,5 @@ class Wind(Base):
     wind_kph = Column(Numeric(10, 2))
     wind_degree = Column(Integer)
     wind_direction = Column(String(8))
+    go_outside = Column(Boolean)
     weather = relationship("Weather", back_populates="wind")

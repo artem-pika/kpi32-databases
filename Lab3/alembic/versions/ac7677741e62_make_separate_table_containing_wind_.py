@@ -44,9 +44,4 @@ FROM weather;""")
 
 def downgrade() -> None:
     """Downgrade schema."""
-    # TODO
-    # op.add_column('weather', sa.Column('wind_direction', sa.VARCHAR(length=8), autoincrement=False, nullable=True))
-    # op.add_column('weather', sa.Column('wind_degree', sa.INTEGER(), autoincrement=False, nullable=True))
-    # op.add_column('weather', sa.Column('wind_mph', sa.NUMERIC(precision=10, scale=2), autoincrement=False, nullable=True))
-    # op.add_column('weather', sa.Column('wind_kph', sa.NUMERIC(precision=10, scale=2), autoincrement=False, nullable=True))
-    # op.drop_table('wind')
+    pass
