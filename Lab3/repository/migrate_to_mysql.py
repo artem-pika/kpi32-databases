@@ -1,5 +1,5 @@
 from sqlalchemy import create_engine
-from repository.orm import Base
+from orm import Base
 import pandas as pd
 
 postgre_engine = create_engine("postgresql+psycopg2://postgres:strong_password@localhost:5432/lab3")
