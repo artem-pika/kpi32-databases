@@ -3,7 +3,8 @@ from sqlalchemy.orm import Session
 from sqlalchemy import func
 from repository import orm
 
-db_url = "postgresql+psycopg2://postgres:strong_password@localhost:5432/lab3"
+# db_url = "postgresql+psycopg2://postgres:strong_password@localhost:5432/lab3"
+db_url = "mysql+mysqlconnector://root:strong_password@localhost/lab3"
 
 def get_all_weather_info(country, date):
     country = country.lower().strip()
