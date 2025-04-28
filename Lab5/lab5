@@ -1,0 +1,79 @@
+// delete all nodes and relationships
+MATCH (n)
+DETACH DELETE n;
+
+// Create items
+CREATE (iphone:Item {id: 1, name: "iPhone 6", price: 100})
+CREATE (samsung:Item {id: 2, name: "Samsung", price: 200})
+CREATE (macbook:Item {id: 3, name: "MacBook", price: 1000})
+
+// Create customers
+CREATE (andriy:Customer {id: 1, name: "Andriy"})
+CREATE (dmytro:Customer {id: 2, name: "Dmytro"})
+
+// Create item views
+CREATE (andriy)-[:VIEWED]->(iphone)
+CREATE (andriy)-[:VIEWED]->(macbook)
+CREATE (andriy)-[:VIEWED]->(samsung)
+CREATE (dmytro)-[:VIEWED]->(iphone)
+CREATE (dmytro)-[:VIEWED]->(macbook)
+
+// Create orders
+CREATE (andriy)-[:MADE]->(order1:Order {id: 1, date: "2025-01-01"})
+CREATE (iphone)-[:CONTAINED_IN]->(order1)
+CREATE (macbook)-[:CONTAINED_IN]->(order1)
+
+CREATE (dmytro)-[:MADE]->(order2:Order {id: 2, date: "2025-01-02"})
+CREATE (iphone)-[:CONTAINED_IN]->(order2)
+
+CREATE (andriy)-[:MADE]->(order3:Order {id: 3, date: "2025-01-03"})
+CREATE (samsung)-[:CONTAINED_IN]->(order3)
+;
+
+// 1
+MATCH (:Order {id: 1})<-[:CONTAINED_IN]-(i:Item)
+RETURN i;
+
+// 2
+MATCH (:Order {id: 1})<-[:CONTAINED_IN]-(i:Item)
+RETURN sum(i.price);
+
+// 3
+MATCH (:Customer {id: 1})-[:MADE]->(o:Order)
+RETURN o;
+
+// 4
+MATCH (:Customer {id: 1})-[:MADE]->(:Order)<-[:CONTAINED_IN]-(i:Item)
+RETURN i;
+
+// 5
+MATCH (:Customer {id: 1})-[:MADE]->(:Order)<-[:CONTAINED_IN]-(i:Item)
+RETURN count(i);
+
+// 6
+MATCH (:Customer {id: 1})-[:MADE]->(:Order)<-[:CONTAINED_IN]-(i:Item)
+RETURN sum(i.price);
+
+// 7
+MATCH (:Order)<-[:CONTAINED_IN]-(i:Item)
+RETURN i, count(*)
+ORDER BY count(*) DESC;
+
+// 8
+MATCH (:Customer {id: 1})-[:VIEWED]->(i:Item)
+RETURN i;
+
+// 9
+MATCH (:Item {id: 1})-[:CONTAINED_IN]->(:Order)<-[:CONTAINED_IN]-(i:Item)
+RETURN i;
+
+// 10
+MATCH (:Item {id: 1})-[:CONTAINED_IN]->(:Order)<-[:MADE]-(c:Customer)
+RETURN c;
+
+// 11
+MATCH (c:Customer {id: 2})-[:VIEWED]->(i:Item)
+WHERE NOT EXISTS {
+    MATCH (c)-[:MADE]->(:Order)<-[:CONTAINED_IN]-(i)
+}
+RETURN i;
